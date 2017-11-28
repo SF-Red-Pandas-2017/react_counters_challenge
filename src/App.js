@@ -3,34 +3,54 @@ import Counter from './Counter';
 import './App.css';
 
 class App extends React.Component {
-    constructor(props) {
-    super(props);
-    this.increment = this.increment.bind(this)
+    constructor() {
+    super();
     this.state = {
-      count1: 0,
-      count2: 0,
-      count3: 0
+      count: 0,
+      counterValues: [
+        {
+          value: 0,
+          howMuchToIncrement: 1
+        },
+        {
+          value: 0,
+          howMuchToIncrement: 2
+        },
+        {
+          value: 0,
+          howMuchToIncrement: 3
+        }
+      ]
     };
+     this.increment = this.increment.bind(this)
+     this.decrement = this.decrement.bind(this)
   }
 
-  incrementCounters = [1,2,3]
+  increment(index, howMuchToIncrement) {
+    this.setState((prevState, props) => {
+    prevState.counterValues[index].value += howMuchToIncrement;
+    return prevState;
+    });
+  }
 
-  increment(param, count) {
-    console.log(this.state["count" + param])
-    this.setState({ count: this.state["count" + param]})
-    console.log(count)
-  };
-
-  // decrement(props) {
-  //   this.setState({ count: this.state.count - props })
-  // };
+  decrement(index, howMuchToIncrement) {
+    this.setState((prevState, props) => {
+    prevState.counterValues[index].value -= howMuchToIncrement;
+    return prevState;
+    });
+  }
 
   render() {
+    const counterComponent = this.state.counterValues.map((value, index, wholeArray) => {
+      return (
+        <Counter indexToModify={ index } count={ value.value } increment={ this.increment } decrement={ this.decrement } howMuchToIncrement={ value.howMuchToIncrement } />
+        )
+    })
     return (
       <div className="page-center-frame">
-        <Counter incrementValue={1} increment={this.increment} count={this.state[`count${value}`]}/>
-        <Counter incrementValue={2} increment={this.increment} count={this.state.count2}/>
-        <Counter incrementValue={3} increment={this.increment} count={this.state.count3}/>
+        {
+          counterComponent
+        }
       </div>
     );
   }
