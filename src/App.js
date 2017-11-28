@@ -24,6 +24,7 @@ class App extends React.Component {
     };
      this.increment = this.increment.bind(this)
      this.decrement = this.decrement.bind(this)
+     this.removeCounter = this.removeCounter.bind(this)
   }
 
   increment(index, howMuchToIncrement) {
@@ -40,10 +41,27 @@ class App extends React.Component {
     });
   }
 
+  removeCounter(counter) {
+    console.log(counter)
+    const newState = this.state.counterValues;
+    console.log(this)
+    console.log(newState)
+    console.log(newState.indexOf(counter))
+    if (newState.indexOf(counter) >= -1){
+      console.log(counter.indexToModify)
+      newState.splice(counter, 1);
+      console.log(newState)
+      this.setState({counterValues: newState})
+    }
+    //     this.setState((prevState) => {
+    //   prevState.counterValues.splice(index, 0);
+    // });
+  }
+
   render() {
     const counterComponent = this.state.counterValues.map((value, index, wholeArray) => {
       return (
-        <Counter indexToModify={ index } count={ value.value } increment={ this.increment } decrement={ this.decrement } howMuchToIncrement={ value.howMuchToIncrement } />
+        <Counter key={ index } indexToModify={ index } count={ value.value } increment={ this.increment } decrement={ this.decrement } howMuchToIncrement={ value.howMuchToIncrement } removeCounter={ this.removeCounter }/>
         )
     })
     return (
@@ -51,6 +69,7 @@ class App extends React.Component {
         {
           counterComponent
         }
+
       </div>
     );
   }
