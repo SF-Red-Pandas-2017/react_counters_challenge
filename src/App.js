@@ -25,6 +25,7 @@ class App extends React.Component {
      this.increment = this.increment.bind(this)
      this.decrement = this.decrement.bind(this)
      this.removeCounter = this.removeCounter.bind(this)
+     this.componentDidMount = this.componentDidMount.bind(this)
   }
 
   increment(index, howMuchToIncrement) {
@@ -42,20 +43,28 @@ class App extends React.Component {
   }
 
   removeCounter(counter) {
-    console.log(counter)
     const newState = this.state.counterValues;
-    console.log(this)
-    console.log(newState)
-    console.log(newState.indexOf(counter))
     if (newState.indexOf(counter) >= -1){
-      console.log(counter.indexToModify)
       newState.splice(counter, 1);
-      console.log(newState)
       this.setState({counterValues: newState})
     }
-    //     this.setState((prevState) => {
-    //   prevState.counterValues.splice(index, 0);
-    // });
+  }
+
+  componentDidMount(counter) {
+    fetch('http://numbers-api.herokuapp.com/counters')
+    .then(results => {
+      return results.json();
+    }).then(data => {
+      console.log(data)
+      let counterValues = data.map((counter) => {
+        return(
+          <div key={counter.results}>
+             {console.log(counter)}
+          </div>
+          )
+      })
+
+    })
   }
 
   render() {
